@@ -1,12 +1,10 @@
 /* eslint-disable no-console */
 const sqlite3 = require('sqlite3').verbose();
 
-function moviesDb(callback) {
+function moviesDb(sqlQuery, callback) {
   const data = [
     ['IMDB ID', 'TITLE', 'GENRE', 'RELEASE DATE', 'BUDGET'],
   ];
-
-  const sql = 'SELECT imdbId, title, genres, releaseDate, budget FROM movies LIMIT 3';
 
   const db = new sqlite3.Database('./database/movies.db', sqlite3.OPEN_READONLY, (err) => {
     if (err) {
@@ -16,7 +14,7 @@ function moviesDb(callback) {
   });
 
   db.serialize(() => {
-    db.each(sql, (err, row) => {
+    db.each(sqlQuery.set_query, (err, row) => {
       if (err) {
         console.error(err.message);
       }
@@ -35,7 +33,7 @@ function moviesDb(callback) {
   });
 }
 
-function ratingsDb() {
+function ratingsDb(movieId, callback) {
 
 }
 
